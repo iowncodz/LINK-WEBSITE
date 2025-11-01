@@ -203,16 +203,17 @@ loginForm.onsubmit=e=>{
  if(!user){msg.textContent="Invalid username or password";return;}
  current=user;save(KEY_CUR,current);
 
- // show login success popup
  successMsg.style.display="block";
- setTimeout(()=>{successMsg.style.display="none";},1500);
+ setTimeout(()=>successMsg.style.display="none",1500);
 
- // fade modal out, dashboard in
+ // fade modal out, show dashboard
  loginModal.style.opacity="0";
  setTimeout(()=>{
    loginModal.style.display="none";
-   dashboard.style.display="block";
-   setTimeout(()=>dashboard.style.opacity="1",50);
+   dashboard.style.display="flex";
+   dashboard.style.flexDirection="column";
+   dashboard.style.opacity="1";
+
    welcomeText.textContent="Welcome, "+u+(user.isAdmin?" (Admin)":"");
    if(user.isAdmin)addLinkBtn.style.display="inline-block";
    renderLinks();
