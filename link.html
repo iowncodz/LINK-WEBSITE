@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Fire Link Hub — @IOWN_CODZ</title>
+
+<style>
+:root{
+  --accent1:#ffb400;
+  --accent2:#ff8c00;
+  --muted:#ccc;
+}
+html,body{
+  margin:0;padding:0;height:100%;width:100%;
+  font-family:"Poppins",sans-serif;color:#fff;overflow:hidden;
+}
+#vanta-bg{position:fixed;inset:0;z-index:0;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1;}
+.app{position:relative;z-index:2;display:flex;justify-content:center;align-items:center;height:100vh;}
+.login-modal{
+  width:400px;max-width:90%;
+  background:rgba(0,0,0,0.7);
+  border-radius:14px;padding:24px;
+  box-shadow:0 0 30px rgba(255,180,0,0.7);
+  transition:opacity .4s ease;
+}
+.login-modal h2{text-align:center;color:var(--accent1);
+  text-shadow:0 0 10px var(--accent1),0 0 20px var(--accent2);}
+form{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+input{
+  padding:10px;border:none;border-radius:8px;
+  background:rgba(255,255,255,0.1);color:#fff;
+}
+button{
+  padding:10px;border:none;border-radius:8px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent1));
+  color:#111;font-weight:700;cursor:pointer;
+}
+button:hover{transform:scale(1.05);box-shadow:0 0 15px var(--accent1);}
+.switch{text-align:center;font-size:14px;color:var(--muted);}
+.switch span{color:var(--accent1);cursor:pointer;}
+.dashboard{
+  display:none;opacity:0;transition:opacity .5s ease;
+  position:relative;z-index:3;width:92%;max-width:1100px;
+  margin:0 auto;padding:20px;
+}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.topbar h3{color:var(--accent1);}
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.link-card{
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:12px;
+}
+.link-card .title{color:var(--accent1);font-weight:700;}
+.link-card .url{color:var(--muted);font-size:13px;word-break:break-all;}
+.btn-small{
+  padding:6px 10px;margin-top:8px;
+  border:none;border-radius:6px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent1));
+  color:#111;font-weight:600;cursor:pointer;
+}
+footer{
+  position:fixed;right:12px;bottom:10px;
+  font-size:14px;color:var(--accent1);
+  text-shadow:0 0 10px var(--accent2),0 0 20px var(--accent1);
+  z-index:5;font-weight:600;
+}
+</style>
+</head>
+<body>
+<div id="vanta-bg"></div>
+<div class="overlay"></div>
+
+<div class="app">
+  <div id="loginModal" class="login-modal">
+    <h2 id="formTitle">Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <p id="msg" style="text-align:center;color:#ccc;font-size:13px;margin:0;"></p>
+    </form>
+    <form id="signupForm" style="display:none;">
+      <input type="text" id="newUser" placeholder="New Username" required>
+      <input type="password" id="newPass" placeholder="New Password" required>
+      <button type="submit">Sign Up</button>
+      <p id="signupMsg" style="text-align:center;color:#ccc;font-size:13px;margin:0;"></p>
+    </form>
+    <p class="switch" id="switchText">Don’t have an account? <span id="switchBtn">Sign Up</span></p>
+  </div>
+</div>
+
+<div id="dashboard" class="dashboard">
+  <div class="topbar">
+    <h3 id="welcomeText">Welcome</h3>
+    <div>
+      <button id="addLinkBtn" class="btn-small" style="display:none;">+ Add Link</button>
+      <button id="logoutBtn" class="btn-small">Logout</button>
+    </div>
+  </div>
+  <div class="links-grid" id="linksGrid"></div>
+</div>
+
+<footer>© Made by @IOWN_CODZ</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+<script>
+VANTA.BIRDS({
+  el: "#vanta-bg",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  backgroundColor: 0x141b24,
+  color1: 0xff8c00,
+  color2: 0xffb400,
+  birdSize: 1.2,
+  quantity: 3.00,
+});
+</script>
+
+<script>
+const ADMINS=[
+ {username:"IOWN_CODZ",password:"ayaan.7866",isAdmin:true},
+ {username:"6kg.i",password:"ayaan.7866",isAdmin:true}
+];
+const KEY_USERS="ff_users",KEY_LINKS="ff_links",KEY_CUR="ff_current";
+const load=(k,f=null)=>JSON.parse(localStorage.getItem(k)||JSON.stringify(f));
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+if(!load(KEY_USERS))save(KEY_USERS,ADMINS);
+if(!load(KEY_LINKS))save(KEY_LINKS,[
+ {title:"YouTube",url:"https://youtube.com"},
+ {title:"GitHub",url:"https://github.com"},
+ {title:"Instagram",url:"https://instagram.com"}
+]);
+
+const loginForm=document.getElementById("loginForm");
+const signupForm=document.getElementById("signupForm");
+const switchBtn=document.getElementById("switchBtn");
+const switchText=document.getElementById("switchText");
+const formTitle=document.getElementById("formTitle");
+const msg=document.getElementById("msg");
+const signupMsg=document.getElementById("signupMsg");
+let showingSignup=false;
+
+switchBtn.onclick=()=>{
+ showingSignup=!showingSignup;
+ loginForm.style.display=showingSignup?"none":"block";
+ signupForm.style.display=showingSignup?"block":"none";
+ formTitle.textContent=showingSignup?"Sign Up":"Login";
+ switchText.innerHTML=showingSignup?
+  'Already have an account? <span id="switchBtn">Login</span>':
+  'Don’t have an account? <span id="switchBtn">Sign Up</span>';
+ switchText.querySelector("span").onclick=switchBtn.onclick;
+};
+
+const dashboard=document.getElementById("dashboard");
+const loginModal=document.getElementById("loginModal");
+const linksGrid=document.getElementById("linksGrid");
+const addLinkBtn=document.getElementById("addLinkBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+const welcomeText=document.getElementById("welcomeText");
+let current=null;
+
+function renderLinks(){
+ const links=load(KEY_LINKS,[]);
+ linksGrid.innerHTML="";
+ links.forEach((l,i)=>{
+  const div=document.createElement("div");
+  div.className="link-card";
+  div.innerHTML=`<div class="title">${l.title}</div>
+    <div class="url">${l.url}</div>
+    <button class="btn-small" onclick="window.open('${l.url}','_blank')">Open</button>
+    ${current?.isAdmin?
+      `<button class="btn-small" onclick="editLink(${i})">Edit</button>
+       <button class="btn-small" onclick="deleteLink(${i})">Delete</button>`:""}`;
+  linksGrid.appendChild(div);
+ });
+}
+
+loginForm.onsubmit=e=>{
+ e.preventDefault();
+ const u=username.value.trim(),p=password.value;
+ const users=load(KEY_USERS,[]);
+ const user=users.find(x=>x.username===u&&x.password===p);
+ if(!user){msg.textContent="Invalid username or password";return;}
+ current=user;save(KEY_CUR,current);
+ // fade modal out, dashboard in
+ loginModal.style.opacity="0";
+ setTimeout(()=>{
+   loginModal.style.display="none";
+   dashboard.style.display="block";
+   setTimeout(()=>dashboard.style.opacity="1",50);
+   welcomeText.textContent="Welcome, "+u+(user.isAdmin?" (Admin)":"");
+   if(user.isAdmin)addLinkBtn.style.display="inline-block";
+   renderLinks();
+ },300);
+};
+
+signupForm.onsubmit=e=>{
+ e.preventDefault();
+ const u=newUser.value.trim(),p=newPass.value;
+ if(!u||!p){signupMsg.textContent="Please fill all fields";return;}
+ let users=load(KEY_USERS,[]);
+ if(users.some(x=>x.username===u)){signupMsg.textContent="Username already exists";return;}
+ users.push({username:u,password:p,isAdmin:false});
+ save(KEY_USERS,users);
+ signupMsg.textContent="Account created! You can now log in.";
+ setTimeout(()=>{switchBtn.click();},1000);
+};
+
+addLinkBtn.onclick=()=>{
+ if(!current?.isAdmin)return;
+ const t=prompt("Link title:"),u=prompt("Link URL:");
+ if(!t||!u)return;
+ let links=load(KEY_LINKS,[]);links.push({title:t,url:u});
+ save(KEY_LINKS,links);renderLinks();
+};
+window.editLink=i=>{
+ const links=load(KEY_LINKS,[]);
+ const l=links[i];
+ const t=prompt("Edit title:",l.title),u=prompt("Edit URL:",l.url);
+ if(t&&u){links[i]={title:t,url:u};save(KEY_LINKS,links);renderLinks();}
+};
+window.deleteLink=i=>{
+ if(!confirm("Delete this link?"))return;
+ let links=load(KEY_LINKS,[]);
+ links.splice(i,1);save(KEY_LINKS,links);renderLinks();
+};
+logoutBtn.onclick=()=>{localStorage.removeItem(KEY_CUR);location.reload();};
+
+// always start with login screen
+localStorage.removeItem(KEY_CUR);
+</script>
+</body>
+</html>
