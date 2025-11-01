@@ -67,6 +67,18 @@ footer{
   text-shadow:0 0 10px var(--accent2),0 0 20px var(--accent1);
   z-index:5;font-weight:600;
 }
+#successMsg {
+  position: fixed;
+  top: 20px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  border: 2px solid var(--accent1);
+  color: var(--accent1);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  z-index: 10;
+  display: none;
+}
 </style>
 </head>
 <body>
@@ -91,6 +103,8 @@ footer{
     <p class="switch" id="switchText">Don’t have an account? <span id="switchBtn">Sign Up</span></p>
   </div>
 </div>
+
+<div id="successMsg">✅ Login Successful!</div>
 
 <div id="dashboard" class="dashboard">
   <div class="topbar">
@@ -162,6 +176,7 @@ const linksGrid=document.getElementById("linksGrid");
 const addLinkBtn=document.getElementById("addLinkBtn");
 const logoutBtn=document.getElementById("logoutBtn");
 const welcomeText=document.getElementById("welcomeText");
+const successMsg=document.getElementById("successMsg");
 let current=null;
 
 function renderLinks(){
@@ -187,6 +202,11 @@ loginForm.onsubmit=e=>{
  const user=users.find(x=>x.username===u&&x.password===p);
  if(!user){msg.textContent="Invalid username or password";return;}
  current=user;save(KEY_CUR,current);
+
+ // show login success popup
+ successMsg.style.display="block";
+ setTimeout(()=>{successMsg.style.display="none";},1500);
+
  // fade modal out, dashboard in
  loginModal.style.opacity="0";
  setTimeout(()=>{
@@ -196,7 +216,7 @@ loginForm.onsubmit=e=>{
    welcomeText.textContent="Welcome, "+u+(user.isAdmin?" (Admin)":"");
    if(user.isAdmin)addLinkBtn.style.display="inline-block";
    renderLinks();
- },300);
+ },400);
 };
 
 signupForm.onsubmit=e=>{
@@ -230,9 +250,6 @@ window.deleteLink=i=>{
  links.splice(i,1);save(KEY_LINKS,links);renderLinks();
 };
 logoutBtn.onclick=()=>{localStorage.removeItem(KEY_CUR);location.reload();};
-
-// always start with login screen
-localStorage.removeItem(KEY_CUR);
 </script>
 </body>
 </html>
