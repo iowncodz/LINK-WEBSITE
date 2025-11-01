@@ -165,20 +165,24 @@ footer{
 
 <!-- ✅ SAFE VANTA VERSION (NO EVAL ISSUE) -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/tengbao/vanta/dist/vanta.birds.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/tengbao/vanta/dist/vanta.waves.min.js"></script>
 <script>
-VANTA.BIRDS({
+VANTA.WAVES({
   el: "#vanta-bg",
   mouseControls: true,
   touchControls: true,
   gyroControls: false,
-  backgroundColor: 0x141b24,
-  color1: 0xff8c00,
-  color2: 0xffb400,
-  birdSize: 1.2,
-  quantity: 3.00,
+  scale: 1.0,
+  scaleMobile: 1.0,
+  shininess: 50,
+  waveHeight: 25,
+  waveSpeed: 0.75,
+  zoom: 0.9,
+  color: 0xff8c00,
+  backgroundColor: 0x141b24
 });
 </script>
+
 
 <script>
 const ADMINS=[
@@ -298,3 +302,4 @@ logoutBtn.onclick=()=>{localStorage.removeItem(KEY_CUR);location.reload();};
 </script>
 </body>
 </html>
+
