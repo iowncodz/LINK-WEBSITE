@@ -40,26 +40,69 @@ button{
 button:hover{transform:scale(1.05);box-shadow:0 0 15px var(--accent1);}
 .switch{text-align:center;font-size:14px;color:var(--muted);}
 .switch span{color:var(--accent1);cursor:pointer;}
+
+/* ===== Dashboard Style ===== */
 .dashboard{
   display:none;opacity:0;transition:opacity .5s ease;
-  position:relative;z-index:3;width:92%;max-width:1100px;
-  margin:0 auto;padding:20px;
+  position:relative;z-index:3;
+  width:90%;max-width:1100px;
+  margin:0 auto;
+  height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.topbar h3{color:var(--accent1);}
-.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  margin-bottom:20px;
+}
+.topbar h3{
+  color:var(--accent1);
+  font-size:1.5em;
+  text-shadow:0 0 10px var(--accent1),0 0 20px var(--accent2);
+}
+.links-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:20px;
+  width:100%;
+}
 .link-card{
-  background:rgba(0,0,0,0.5);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:10px;padding:12px;
+  background:rgba(0,0,0,0.65);
+  border:2px solid var(--accent1);
+  border-radius:15px;
+  padding:18px;
+  box-shadow:0 0 15px rgba(255,180,0,0.4);
+  transition:transform .3s ease, box-shadow .3s ease;
 }
-.link-card .title{color:var(--accent1);font-weight:700;}
-.link-card .url{color:var(--muted);font-size:13px;word-break:break-all;}
+.link-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 25px rgba(255,180,0,0.8);
+}
+.link-card .title{
+  color:var(--accent1);
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:5px;
+}
+.link-card .url{
+  color:var(--muted);
+  font-size:13px;
+  word-break:break-all;
+}
 .btn-small{
   padding:6px 10px;margin-top:8px;
   border:none;border-radius:6px;
   background:linear-gradient(90deg,var(--accent2),var(--accent1));
   color:#111;font-weight:600;cursor:pointer;
+}
+.btn-small:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px var(--accent1);
 }
 footer{
   position:fixed;right:12px;bottom:10px;
@@ -80,6 +123,7 @@ footer{
   display: none;
 }
 </style>
+
 </head>
 <body>
 <div id="vanta-bg"></div>
@@ -119,8 +163,9 @@ footer{
 
 <footer>© Made by @IOWN_CODZ</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+<!-- ✅ SAFE VANTA VERSION (NO EVAL ISSUE) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/tengbao/vanta/dist/vanta.birds.min.js"></script>
 <script>
 VANTA.BIRDS({
   el: "#vanta-bg",
@@ -206,7 +251,6 @@ loginForm.onsubmit=e=>{
  successMsg.style.display="block";
  setTimeout(()=>successMsg.style.display="none",1500);
 
- // fade modal out, show dashboard
  loginModal.style.opacity="0";
  setTimeout(()=>{
    loginModal.style.display="none";
